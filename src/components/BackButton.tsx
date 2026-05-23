@@ -1,14 +1,18 @@
-import Button from "./Button"
+import Button from "./Button";
 import { useNavigate } from "react-router-dom";
-function BackButton({children}) {
-    const navigate = useNavigate()
-    return (
-        <Button 
-        type="back" 
-        onClick={ (e) => {e.preventDefault() ; navigate(-1)}}>
-            {children}
-        </Button>
-    )
+function BackButton({ children }: { children: React.ReactNode }) {
+  const navigate = useNavigate();
+  return (
+    <Button
+      type="back"
+      onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        navigate(-1);
+      }}
+    >
+      {children}
+    </Button>
+  );
 }
 
-export default BackButton
+export default BackButton;
