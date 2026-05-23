@@ -1,12 +1,15 @@
-import styles from './Button.module.css'
-function Button({children,onClick,type}) {
-    return (
-        <button   
-            className={`${styles.btn} ${styles[type]}`}
-            onClick={onClick} >
-            {children}
-        </button>
-    )
+import styles from "./Button.module.css";
+type ButtonProps = {
+  children: React.ReactNode;
+  onClick: () => void;
+  type: string;
+};
+function Button({ children, onClick, type }: ButtonProps) {
+  return (
+    <button className={`${styles.btn} ${styles[type]}`} onClick={onClick}>
+      {children}
+    </button>
+  );
 }
 
-export default Button
+export default Button;
