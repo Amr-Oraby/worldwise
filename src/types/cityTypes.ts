@@ -1,6 +1,6 @@
 export type CityType = {
   id: number;
-  city_name: string;
+  cityName: string;
   country: string;
   date: string;
   emoji: string;
