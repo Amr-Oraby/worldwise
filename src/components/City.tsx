@@ -1,33 +1,26 @@
-/* eslint-disable no-unused-vars */
-import { useParams,useSearchParams } from "react-router-dom";
-import { CitiesProvider, useCities } from "../contexts/CitiesContext";
-import { useEffect } from "react";
-import styles from './City.module.css'
-import Spinner from "./Spinner";
+// import { useParams,useSearchParams } from "react-router-dom";
+// import { CitiesProvider, useCities } from "../contexts/CitiesContext";
+// import { useEffect } from "react";
+import styles from "./City.module.css";
+// import Spinner from "./Spinner";
 import BackButton from "./BackButton";
+import useCity from "../features/cities/useCity";
+import Spinner from "./Spinner";
 
-    const formatDate = (date) =>
-        new Intl.DateTimeFormat("en", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-        weekday: "long",
-    }).format(new Date(date));
-
+const formatDate = (date: string | undefined) => {
+  if (!date) return "";
+  new Intl.DateTimeFormat("en", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    weekday: "long",
+  }).format(new Date(date));
+};
 
 function City() {
-
-  // const { cityName, emoji, date, notes } = currentCity;
-      const {id} = useParams()
-      const {getCity,currentCity,isLoading} = useCities();
-      const {emoji,cityName,date,notes} = currentCity
-      useEffect(() => {
-        getCity(id)
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      },[id])
-
-
-  if(isLoading) return <Spinner />
+  const { city, isLoading } = useCity();
+  const { emoji, date, cityName, notes } = city ?? {};
+  if (isLoading) return <Spinner />;
 
   return (
     <div className={styles.city}>
@@ -40,7 +33,7 @@ function City() {
 
       <div className={styles.row}>
         <h6>You went to {cityName} on</h6>
-        <p>{formatDate(date || null)}</p>
+        <p>{formatDate(date)}</p>
       </div>
 
       {notes && (
@@ -62,9 +55,7 @@ function City() {
       </div>
 
       <div>
-         <BackButton>
-          &larr; Back
-         </BackButton>
+        <BackButton>&larr; Back</BackButton>
       </div>
     </div>
   );
