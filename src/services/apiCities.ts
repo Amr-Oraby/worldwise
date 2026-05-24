@@ -10,11 +10,12 @@ export async function getCities() {
   return data;
 }
 
-export async function getCity(id: number) {
+export async function getCity(id: number): Promise<CityType> {
   const { data, error } = await supabase
     .from("cities")
     .select("*")
-    .eq("id", id);
+    .eq("id", id)
+    .single();
   if (error) {
     console.error(error);
     throw new Error("City could not be loaded");
@@ -33,14 +34,15 @@ export async function deleteCity(id: number) {
   return data;
 }
 
-export async function createCity(newCity: CityType) {
+export async function createCity(newCity: CityType): Promise<CityType> {
   const { data, error } = await supabase
     .from("cities")
     .insert([newCity])
-    .select();
+    .select()
+    .single(); // to return the created city
   if (error) {
     console.error(error);
-    throw new Error("City could not be deleted");
+    throw new Error("City could not be created");
   }
 
   return data;
