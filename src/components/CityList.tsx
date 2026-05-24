@@ -1,24 +1,25 @@
-import styles from './CityList.module.css'
-import Spinner from "../components/Spinner"
-import Cityitem from './Cityitem';
-import Message from "./Message"
-import { useCities } from '../contexts/CitiesContext';
+import useCities from "../features/cities/useCities";
+import Cityitem from "./Cityitem";
+import styles from "./CityList.module.css";
+import Message from "./Message";
+import Spinner from "./Spinner";
 
 function CityList() {
-    const {isLoading,cities} = useCities()
-    if (isLoading) return <Spinner />
+  const { isLoading, cities } = useCities();
+  if (isLoading) return <Spinner />;
 
-    if(!cities.length) return <Message message="Add your first city by clicking on a city on the map" />
-
+  if (!cities?.length)
     return (
-        <ul className={styles.cityList}>
-            {
-                cities.map(city => (
-                <Cityitem key={city.id} city={city} />
-                ))   
-            }
-        </ul>
-    )
+      <Message message="Add your first city by clicking on a city on the map" />
+    );
+
+  return (
+    <ul className={styles.cityList}>
+      {cities.map((city) => (
+        <Cityitem key={city.id} city={city} />
+      ))}
+    </ul>
+  );
 }
 
-export default CityList
+export default CityList;
