@@ -68,6 +68,10 @@ input:focus {
   border-radius: 5px;
 }
 
+.tsqd-parent-container {
+  font-size: 17px !important;
+}
+
 /*
 "importCSSModule": {
     "prefix": "csm",
