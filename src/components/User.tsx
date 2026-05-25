@@ -1,22 +1,28 @@
-// import { useEffect } from "react";
-import { useAuth } from "../contexts/FakeAuthContext";
-import { useNavigate } from "react-router-dom";
 import styles from "./User.module.css";
+import useLogout from "../features/authentication/useLogout";
+import useUser from "../features/authentication/useUser";
+import { supabase } from "../services/supbase";
 
 function User() {
-  const {user,logout} = useAuth()
-  
-  const navigate = useNavigate()
-  function handleClick() {
-    logout();
-    navigate("/")  
-  }
+  const { user, isLoading } = useUser();
+  const { user_metadata } = user ?? {};
+  const { name, avatar } = user_metadata ?? {};
+  const { logout, isLoginingOut } = useLogout();
 
+  const avatarUrl = avatar
+    ? supabase.storage.from("avatars").getPublicUrl(avatar).data.publicUrl
+    : "#";
+
+  function handleLogout() {
+    logout();
+  }
   return (
     <div className={styles.user}>
-      <img src={user.avatar} alt={user.name} />
-      <span>Welcome, {user.name}</span>
-      <button onClick={handleClick}>Logout</button>
+      <img src={avatarUrl} alt={name} />
+      <span>Welcome, {name}</span>
+      <button onClick={handleLogout} disabled={isLoading || isLoginingOut}>
+        Logout
+      </button>
     </div>
   );
 }
