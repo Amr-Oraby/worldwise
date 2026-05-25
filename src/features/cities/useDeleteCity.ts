@@ -1,11 +1,15 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteCity as deleteCityApi } from "../../services/apiCities";
 
 function useDeleteCity() {
-  const { mutate: deleteCity, isPending } = useMutation({
+  const queryClient = useQueryClient();
+  const { mutate: deleteCity, isPending: isDeleting } = useMutation({
     mutationFn: deleteCityApi,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cities"] });
+    },
   });
-  return { deleteCity, isPending };
+  return { deleteCity, isDeleting };
 }
 
 export default useDeleteCity;
