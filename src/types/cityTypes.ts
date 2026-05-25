@@ -1,10 +1,10 @@
 export type CityType = {
-  id: number;
+  id?: number;
   cityName: string;
   country: string;
-  date: string;
+  date: Date;
   emoji: string;
   notes: string;
-  lat: number;
-  lng: number;
+  lat: string | null;
+  lng: string | null;
 };
