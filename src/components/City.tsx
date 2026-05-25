@@ -7,7 +7,7 @@ import BackButton from "./BackButton";
 import useCity from "../features/cities/useCity";
 import Spinner from "./Spinner";
 
-const formatDate = (date: string | undefined) => {
+const formatDate = (date: Date | undefined) => {
   if (!date) return "";
   new Intl.DateTimeFormat("en", {
     day: "numeric",
