@@ -1,34 +1,32 @@
-/* eslint-disable no-unused-vars */
-import { useEffect, useState } from "react";
-import { useAuth } from "../contexts/FakeAuthContext";
 import PageNav from "../components/PageNav";
 import styles from "./Login.module.css";
-import Button from "../components/Button"
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import Button from "../components/Button";
+import useLogin from "../features/authentication/useLogin";
 export default function Login() {
-  // PRE-FILL FOR DEV PURPOSES
-  const [email, setEmail] = useState("jack@example.com");
-  const [password, setPassword] = useState("qwerty");
-  const {login,isAuthenticated} = useAuth();
-  const navigate = useNavigate()
+  const [email, setEmail] = useState("test1@test.com");
+  const [password, setPassword] = useState("123456789");
+  const { login, isLoginingIn } = useLogin();
 
-function handleLogin(e) {
-  e.preventDefault()
-  // these function lead to isAuthenticated => true
-  if(email && password) login(email,password);
-}
-
-useEffect(() => {
-  if(isAuthenticated) {
-    navigate("/app",{replace:true})
+  function handleLogin(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    // these function lead to isAuthenticated => true
+    if (email && password)
+      login(
+        { email, password },
+        {
+          onSettled: () => {
+            setEmail("");
+            setPassword("");
+          },
+        },
+      );
   }
-},[isAuthenticated,navigate])
-
 
   return (
     <main className={styles.login}>
       <PageNav />
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={handleLogin}>
         <div className={styles.row}>
           <label htmlFor="email">Email address</label>
           <input
@@ -36,6 +34,7 @@ useEffect(() => {
             id="email"
             onChange={(e) => setEmail(e.target.value)}
             value={email}
+            disabled={isLoginingIn}
           />
         </div>
 
@@ -46,11 +45,14 @@ useEffect(() => {
             id="password"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
+            disabled={isLoginingIn}
           />
         </div>
 
         <div>
-          <Button type="primary" onClick={handleLogin}>Login</Button>
+          <Button type="primary" disabled={isLoginingIn}>
+            Login
+          </Button>
         </div>
       </form>
     </main>
