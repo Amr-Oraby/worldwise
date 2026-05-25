@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   MapContainer,
   TileLayer,
@@ -8,16 +7,15 @@ import {
   useMap,
   useMapEvent,
 } from "react-leaflet";
-import { useEffect, useState } from "react";
-import { useCities } from "../contexts/CitiesContext";
+import type { LeafletMouseEvent } from "leaflet";
 import { useGeolocation } from "../hooks/useGeolocation";
 import { useUrlPosition } from "../hooks/useUrlPosition";
 import Button from "./Button";
 import styles from "./Map.module.css";
+import useCities from "../features/cities/useCities";
 
 function Map() {
   const { cities } = useCities();
-  const [mapPosition, setMapPosition] = useState([0, 20]);
   // custom hook to get url params
   const [mapLat, mapLng] = useUrlPosition();
   // custom hook to get my position
@@ -26,17 +24,12 @@ function Map() {
     isLoading: isLoadingPosition,
     getPosition,
   } = useGeolocation();
-
-  // syncronization 1
-  useEffect(() => {
-    if (mapLat && mapLng) setMapPosition([mapLat, mapLng]);
-  }, [mapLat, mapLng]);
-
-  // syncronization 2
-  useEffect(() => {
-    if (geolocationPosition)
-      setMapPosition([geolocationPosition.lat, geolocationPosition.lng]);
-  }, [geolocationPosition]);
+  // syncronization 2 and 2
+  const mapPosition: [number, number] = geolocationPosition
+    ? [geolocationPosition?.lat, geolocationPosition?.lng]
+    : mapLat != null && mapLng != null
+      ? [Number(mapLat), Number(mapLng)]
+      : [40, 0];
 
   return (
     <div className={styles.mapContainer}>
@@ -56,11 +49,8 @@ function Map() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        {cities.map((city) => (
-          <Marker
-            key={city.id}
-            position={[city.position.lat, city.position.lng]}
-          >
+        {cities?.map((city) => (
+          <Marker key={city.id} position={[city.lat, city.lng]}>
             <Popup>
               <span>{city.emoji}</span>
               <span>{city.cityName}</span>
@@ -75,7 +65,7 @@ function Map() {
   );
 }
 
-function ChangeCenter({ position }) {
+function ChangeCenter({ position }: { position: [number, number] }) {
   const map = useMap(); // instance of the map
   map.setView(position, 6);
   return null;
@@ -84,10 +74,11 @@ function ChangeCenter({ position }) {
 function DetectClick() {
   const navigate = useNavigate();
   // change url => change lat,lng => change center
-  useMapEvent({
-    click: (e) => {
-      navigate(`form?lat=${e.latlng.lat}&lng=${e.latlng.lng}`);
-    },
+  useMapEvent("click", (e: LeafletMouseEvent) => {
+    navigate(`/form?lat=${e.latlng.lat}&lng=${e.latlng.lng}`);
   });
+
+  return null;
 }
+
 export default Map;
