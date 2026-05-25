@@ -75,7 +75,7 @@ function DetectClick() {
   const navigate = useNavigate();
   // change url => change lat,lng => change center
   useMapEvent("click", (e: LeafletMouseEvent) => {
-    navigate(`/form?lat=${e.latlng.lat}&lng=${e.latlng.lng}`);
+    navigate(`form?lat=${e.latlng.lat}&lng=${e.latlng.lng}`);
   });
 
   return null;
