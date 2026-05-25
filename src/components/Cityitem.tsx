@@ -4,7 +4,7 @@ import type { CityType } from "../types/cityTypes";
 import styles from "./Cityitem.module.css";
 import { Link } from "react-router-dom";
 
-const formatDate = (date: string) =>
+const formatDate = (date: Date) =>
   new Intl.DateTimeFormat("en", {
     day: "numeric",
     month: "long",
@@ -24,12 +24,14 @@ const flagemojiToPNG = (flag: string) => {
 };
 
 function Cityitem({ city }: { city: CityType }) {
-  const { cityName, emoji, date, id, lat, lng } = city;
-  const { deleteCity } = useDeleteCity();
+  const { cityName, emoji, date, id, lat, lng } = city ?? {};
+  const { deleteCity, isDeleting } = useDeleteCity();
   const { currentCity } = useCreateCity();
 
   function handleDelete(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
+    console.log(id, isDeleting);
+    if (!id) return;
     deleteCity(id);
   }
 
@@ -42,7 +44,11 @@ function Cityitem({ city }: { city: CityType }) {
         <span className={styles.emoji}>{flagemojiToPNG(emoji)}</span>
         <h3 className={styles.name}>{cityName} </h3>
         <time className={styles.date}>{formatDate(date)}</time>
-        <button className={styles.deleteBtn} onClick={handleDelete}>
+        <button
+          className={styles.deleteBtn}
+          onClick={handleDelete}
+          disabled={isDeleting}
+        >
           &times;
         </button>
       </Link>
