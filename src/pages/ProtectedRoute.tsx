@@ -1,12 +1,32 @@
-import {useAuth} from "../contexts/FakeAuthContext"
-import { Navigate } from "react-router-dom";
-function ProtectedRoute({children}) {
-    const {isAuthenticated} = useAuth();
-    // useEffect(() => {
-    //     if(!isAuthenticated) navigate("/")
-    // },[isAuthenticated,navigate]);
+import { useNavigate } from "react-router-dom";
+import useUser from "../features/authentication/useUser";
+import { useEffect, type CSSProperties } from "react";
+import Spinner from "../components/Spinner";
 
-    return isAuthenticated ? children :  <Navigate to="/" />;
+const FullPageStyle: CSSProperties = {
+  height: "100vh",
+  backgroundColor: "var(--color-grey-50)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+};
+
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated, isLoading } = useUser();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isAuthenticated && !isLoading) navigate("/");
+  }, [isAuthenticated, navigate, isLoading]);
+
+  if (isLoading)
+    return (
+      <div style={FullPageStyle}>
+        <Spinner />
+      </div>
+    );
+
+  if (isAuthenticated) return children;
+  return null;
 }
 
-export default ProtectedRoute
+export default ProtectedRoute;

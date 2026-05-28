@@ -1,7 +1,7 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-
+import ProtectedRoute from "./pages/ProtectedRoute";
 import CityList from "./components/CityList";
 import CountryList from "./components/CountryList";
 import City from "./components/City";
@@ -39,9 +39,9 @@ function App() {
             <Route
               path="app"
               element={
-                // <ProtectedRoute>
-                <AppLayout />
-                // </ProtectedRoute>
+                <ProtectedRoute>
+                  <AppLayout />
+                </ProtectedRoute>
               }
             >
               {/* before we was getting the citiylist but without the route now we have the url => /cities  */}
