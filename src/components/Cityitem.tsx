@@ -30,7 +30,7 @@ function Cityitem({ city }: { city: CityType }) {
 
   function handleDelete(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
-    console.log(id, isDeleting);
+
     if (!id) return;
     deleteCity(id);
   }
