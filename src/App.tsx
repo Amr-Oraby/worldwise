@@ -39,12 +39,13 @@ function App() {
             <Route
               path="app"
               element={
+                //  only authenticated
                 <ProtectedRoute>
                   <AppLayout />
                 </ProtectedRoute>
               }
             >
-              {/* before we was getting the citiylist but without the route now we have the url => /cities  */}
+              {/* before we was getting the citylist but without the route now we have the url => /cities  */}
               {/* before the navigater was a component in the history so we tell react replace it (remove it from history) */}
               <Route index element={<Navigate replace to="cities" />} />
               <Route path="cities" element={<CityList />} />a
