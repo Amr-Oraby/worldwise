@@ -1,7 +1,7 @@
 import useCreateCity from "../features/cities/useCreateCity";
 import useDeleteCity from "../features/cities/useDeleteCity";
 import type { CityType } from "../types/cityTypes";
-import styles from "./Cityitem.module.css";
+import styles from "./CityItem.module.css";
 import { Link } from "react-router-dom";
 
 const formatDate = (date: Date) =>
