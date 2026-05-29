@@ -15,16 +15,17 @@ const PageNotFound = lazy(() => import("./pages/PageNotFound"));
 const AppLayout = lazy(() => import("./pages/AppLayout"));
 const Login = lazy(() => import("./pages/Login"));
 
-function App() {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        // staleTime: 60 * 1000,
-        staleTime: 0,
-      },
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // staleTime: 60 * 1000,
+      staleTime: 0,
+      refetchOnWindowFocus: true,
     },
-  });
+  },
+});
 
+function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
