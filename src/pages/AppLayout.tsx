@@ -1,5 +1,6 @@
+import { lazy } from "react";
 import Sidebar from "../components/Sidebar";
-import Map from "../components/Map";
+const Map = lazy(() => import("../components/Map"));
 import styles from "./AppLayout.module.css";
 import User from "../components/User";
 function AppLayout() {
