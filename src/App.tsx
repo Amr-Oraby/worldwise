@@ -2,13 +2,13 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import ProtectedRoute from "./pages/ProtectedRoute";
 import CityList from "./components/CityList";
 import CountryList from "./components/CountryList";
 import City from "./components/City";
 import Form from "./components/Form";
 import SpinnerFullPage from "./components/SpinnerFullPage";
 // Lazy loading for code splitting and performance optimization
+const ProtectedRoute = lazy(() => import("./pages/ProtectedRoute"));
 const Homepage = lazy(() => import("./pages/Homepage"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const Product = lazy(() => import("./pages/Product"));
@@ -31,6 +31,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
       <BrowserRouter>
+        {/* // Suspense is used to show a fallback UI (SpinnerFullPage) while the lazy-loaded components are being fetched */}
         <Suspense fallback={<SpinnerFullPage />}>
           <Routes>
             <Route index element={<Homepage />} />
