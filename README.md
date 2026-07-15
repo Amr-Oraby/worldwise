@@ -6,7 +6,7 @@ Built as part of Jonas Schmedtmann’s React course and extended into a **real-w
 
 ## 🚀 Live Demo
 
-https://worldwise-oraby.netlify.app/
+https://worldwise-oraby.vercel.app/
 
 ## ⚙️ Tech Stack
 
